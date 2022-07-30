@@ -1,8 +1,15 @@
-const container = document.querySelector(".container")
+const content = document.querySelector(".content")
+const addBtn = document.querySelector("#add")
+const form = document.querySelector(".form")
+const submitBtn = document.querySelector("#submitBtn")
+const title = document.querySelector("#title")
+const author = document.querySelector("#author")
+const pages = document.querySelector("#pages")
+const isRead = document.querySelector("#isRead")
+
+let showForm = false
 let myLibrary = []
-
-
-
+let id = 0
 
 function Book(author, title, pages, isRead ) {
     this.author = author
@@ -11,22 +18,55 @@ function Book(author, title, pages, isRead ) {
     this.isRead = isRead
 }
 
-const book1 = new Book('Jk', 'Porter',456, true)
+submitBtn.addEventListener('click', () => {
+    console.log('add')
+    let bookTitle = title.value
+    let bookAuthor = author.value
+    let bookPages = pages.value
+    let bookRead = (isRead.value === 'on') ? true : false
+    if (!!bookTitle === false) {
+        title.style.borderColor = '#f32424'
+    } else if (!!bookAuthor === false) {
+        author.style.borderColor = '#f32424'
+    } else if (!!bookPages === false) {
+        pages.style.borderColor = '#f32424'
+    } else {
+        const book = new Book(bookAuthor, bookTitle, bookPages, bookRead)
+        myLibrary.push(book)
+        form.setAttribute('style', 'visibility: hidden')
+        addBtn.src = './png/icons8-add-96.png'
+        showForm = false
+        title.value = ""
+        author.value = ""
+        pages.value = ""
+        title.style.borderColor = '#000000'
+        author.style.borderColor = '#000000'
+        pages.style.borderColor = '#000000'
+        book.bookId = id
+        id++
+    }
+})
 
-const book2 = new Book("Lorem ipsum dolor sit", "Lorem ipsum dolor",1093, false)
-
-
-const addBookToLibrary = book => {
-    myLibrary.push(book)
-}
-
-addBookToLibrary(book1)
-addBookToLibrary(book2)
-
-console.log(myLibrary)
+addBtn.addEventListener('click', () => {
+    console.log(myLibrary)
+    if (showForm === false) {
+        form.setAttribute('style', 'visibility: visible')
+        addBtn.src = './png/icons8-cancel-96.png'
+        showForm = true
+        title.style.borderColor = '#000000'
+        author.style.borderColor = '#000000'
+        pages.style.borderColor = '#000000'
+    } else {
+        form.setAttribute('style', 'visibility: hidden')
+        addBtn.src = './png/icons8-add-96.png'
+        showForm = false
+        title.style.borderColor = '#000000'
+        author.style.borderColor = '#000000'
+        pages.style.borderColor = '#000000'
+    }
+})
 
 const displayBook = library => {
-
 
     if (myLibrary.length !== 0 ) {
         for (let book in myLibrary) {
@@ -40,7 +80,7 @@ const displayBook = library => {
             read.setAttribute('class','read')
             const removed = document.createElement("button")
             removed.setAttribute('class','removed')
-            container.append(bookCard)
+            content.append(bookCard)
             bookCard.appendChild(author)
             bookCard.appendChild(title)
             bookCard.appendChild(pages)
@@ -55,4 +95,4 @@ const displayBook = library => {
     }
 }
 
-displayBook(myLibrary)
+// displayBook(myLibrary)

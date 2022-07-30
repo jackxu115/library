@@ -12,17 +12,39 @@
 <body>
 <header>
     <h1>Library</h1>
-    <img src="./png/icons8-add-96.png" alt="">
+    <img id="add" src="./png/icons8-add-96.png" alt="">
 </header>
 
 <div class="container">
-<!--    <div class="card">-->
-<!--        <p>Harry Porter</p>-->
-<!--        <p>Jk Rollin</p>-->
-<!--        <p>495 pages</p>-->
-<!--        <p class="read">Read</p>-->
-<!--        <p class="removed">Removed</p>-->
-<!--    </div>-->
+    <div class="form">
+        <div class="form_content">
+            <form id="form" action="#">
+                <div class="form_content_text title">
+                    <label for="title">Title</label>
+                    <input class="input" type="text" id="title" name="title">
+                </div>
+                <div class="form_content_text author">
+                    <label for="author">Author</label>
+                    <input class="input" type="text" id="author" name="author">
+                </div>
+                <div class="form_content_text pages">
+                    <label for="pages">Pages</label>
+                    <input class="input" type="number" id="pages" name="pages">
+                </div>
+                <div class="form_content_text isRead">
+                    <p>Read</p>
+                    <label class="switch" for="isRead">
+                        <input class="isRead" id="isRead" name="isRead" type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </form>
+            <div class="submit">
+                <button id="submitBtn" type="submit" value="Submit">Add</button>
+            </div>
+        </div>
+    </div>
+    <div class="content"></div>
 </div>
 
 
