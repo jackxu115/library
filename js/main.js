@@ -11,19 +11,20 @@ let showForm = false
 let myLibrary = []
 let id = 0
 
-function Book(author, title, pages, isRead ) {
+// book object
+function Book(author, title, pages, isRead) {
     this.author = author
     this.title = title
     this.pages = pages
     this.isRead = isRead
 }
 
+// confirm add book into library
 submitBtn.addEventListener('click', () => {
-    console.log('add')
     let bookTitle = title.value
     let bookAuthor = author.value
     let bookPages = pages.value
-    let bookRead = (isRead.value === 'on') ? true : false
+    let bookRead = isRead.checked
     if (!!bookTitle === false) {
         title.style.borderColor = '#f32424'
     } else if (!!bookAuthor === false) {
@@ -32,6 +33,7 @@ submitBtn.addEventListener('click', () => {
         pages.style.borderColor = '#f32424'
     } else {
         const book = new Book(bookAuthor, bookTitle, bookPages, bookRead)
+        book.bookId = id
         myLibrary.push(book)
         form.setAttribute('style', 'visibility: hidden')
         addBtn.src = './png/icons8-add-96.png'
@@ -42,13 +44,14 @@ submitBtn.addEventListener('click', () => {
         title.style.borderColor = '#000000'
         author.style.borderColor = '#000000'
         pages.style.borderColor = '#000000'
-        book.bookId = id
+        displayBook(myLibrary, id)
         id++
+        console.log(myLibrary)
     }
 })
 
+// display the form ask user to add book info
 addBtn.addEventListener('click', () => {
-    console.log(myLibrary)
     if (showForm === false) {
         form.setAttribute('style', 'visibility: visible')
         addBtn.src = './png/icons8-cancel-96.png'
@@ -66,33 +69,53 @@ addBtn.addEventListener('click', () => {
     }
 })
 
-const displayBook = library => {
-
-    if (myLibrary.length !== 0 ) {
-        for (let book in myLibrary) {
-            console.log('clicked')
-            const bookCard = document.createElement("div")
-            bookCard.setAttribute('class','card')
-            const author = document.createElement("p")
-            const title = document.createElement("p")
-            const pages = document.createElement("p")
-            const read = document.createElement("button")
-            read.setAttribute('class','read')
-            const removed = document.createElement("button")
-            removed.setAttribute('class','removed')
-            content.append(bookCard)
-            bookCard.appendChild(author)
-            bookCard.appendChild(title)
-            bookCard.appendChild(pages)
-            bookCard.appendChild(read)
-            bookCard.appendChild(removed)
-            title.textContent = myLibrary[book].title
-            author.textContent = myLibrary[book].author
-            pages.textContent = myLibrary[book].pages
-            read.textContent = (myLibrary[book].isRead === true) ? 'Read' : 'Unread'
-            removed.textContent = 'Removed'
-        }
-    }
+// displayed added book on html
+const displayBook = (library, index) => {
+    const bookCard = document.createElement("div")
+    bookCard.setAttribute('class', 'card')
+    bookCard.setAttribute('id', `card${id}`)
+    const author = document.createElement("p")
+    const title = document.createElement("p")
+    const pages = document.createElement("p")
+    const read = document.createElement("button")
+    read.setAttribute('class', 'read')
+    read.setAttribute('id', `read${id}`)
+    const removed = document.createElement("button")
+    removed.setAttribute('class', 'removed')
+    removed.setAttribute('id', `removed${id}`)
+    content.append(bookCard)
+    bookCard.appendChild(author)
+    bookCard.appendChild(title)
+    bookCard.appendChild(pages)
+    bookCard.appendChild(read)
+    bookCard.appendChild(removed)
+    title.textContent = library[index].title
+    author.textContent = library[index].author
+    pages.textContent = library[index].pages
+    read.textContent = (library[index].isRead === true) ? 'Read' : 'Unread'
+    removed.textContent = 'Removed'
+    changeRead(id)
+    removeBook(id)
 }
 
-// displayBook(myLibrary)
+// change book read status
+const changeRead = (index) => {
+    const readBtn = document.querySelector(`#read${index}`)
+    // console.log(readBtn)
+    readBtn.addEventListener('click', () => {
+        console.log(myLibrary)
+        myLibrary[index].isRead = (myLibrary[index].isRead !== true)
+        readBtn.textContent = (myLibrary[index].isRead === true) ? 'Read' : 'Unread'
+    })
+}
+
+// remove book from html,not library
+const removeBook = (index) => {
+    const removeBtn = document.querySelector(`#removed${index}`)
+    // const readBtn = document.querySelector(`#read${index}`)
+    const card = document.querySelector(`#card${index}`)
+    // console.log(card)
+    removeBtn.addEventListener('click', () => {
+        content.removeChild(card)
+    })
+}
